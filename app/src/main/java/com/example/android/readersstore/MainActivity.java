@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.android.readersstore.data.BookContract;
+import com.example.android.readersstore.data.BookDbHelper;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String LOG_TAG = MainActivity.class.getName();
@@ -39,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, AddBookActivity.class);
-                Uri currentBookUri = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
+                Uri currentBookUri = ContentUris.withAppendedId(BookContract.BookEntry.CONTENT_URI, id);
                 intent.setData(currentBookUri);
                 startActivity(intent);
             }
@@ -66,9 +73,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String[] projection = {BookEntry.COLUMN_PRODUCT_NAME, BookEntry.COLUMN_PRODUCT_PRICE, BookEntry.COLUMN_PRODUCT_QUANTITY};
-        return new CursorLoader(this, BookEntry.CONTENT_URI, projection, null, null,null);
+        String[] projection = {BookContract.BookEntry.COLUMN_PROD_NAME, BookContract.BookEntry.COLUMN_PRICE,
+                BookContract.BookEntry.COLUMN_QTY};
+        return new CursorLoader(this, BookContract.BookEntry.CONTENT_URI, projection,
+                null, null,null);
     }
+
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mCursorAdapter.swapCursor(data);

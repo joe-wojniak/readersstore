@@ -6,7 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CursorAdapter;
 import android.widget.TextView;
+
+import com.example.android.readersstore.data.BookContract;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class BookCursorAdapter extends CursorAdapter {
     Integer quantity;
@@ -27,9 +33,9 @@ public class BookCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ButterKnife.bind(this, view);
-        int nameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PRODUCT_NAME);
-        int priceColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PRODUCT_PRICE);
-        int quantityColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PRODUCT_QUANTITY);
+        int nameColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_PROD_NAME);
+        int priceColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_PRICE);
+        int quantityColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_QTY);
         // Read the pet attributes from the Cursor for the current pet
         productName = cursor.getString(nameColumnIndex);
         quantity = cursor.getInt(quantityColumnIndex);
